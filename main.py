@@ -11,11 +11,7 @@ def main():
     # Lock-in configuration
     lockin = LockinController(daq, device)
     lockin.configure_outputs()
-    lockin.configure_modulation()
-
-    # Scope
-    scope = ScopeController(daq, device, save_dir=r"C:\your\save\path")
-    scope.configure()
+    lockin.configure_modulation(filter_order=8)
 
     # Sweeper
     sweeper = SweeperController(daq, device)
@@ -31,10 +27,14 @@ def main():
 
     result = sweeper.run()
 
-    scope.stop()
-    sweeper.stop()
+    # scope.stop()
+    # sweeper.stop()
 
-    print("Scan complete.")
+    # print("Scan complete.")
+
+    # # Scope
+    # scope = ScopeController(daq, device, save_dir=r"C:\your\save\path")
+    # scope.configure()
 
 
 if __name__ == "__main__":
