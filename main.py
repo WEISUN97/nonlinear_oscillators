@@ -2,18 +2,19 @@ from zhinst.core import ziDAQServer
 from module.scope import ScopeController
 from module.sweeper import SweeperController
 from module.lockin_config import LockinController
-from module.tools import save_sweep_to_csv, plot_sweep
+from module.tools import save_sweep_to_csv
 
 
-amp2 = [0.1, 0.5]  # Amplitude for modulation output
-amp1 = [0.02, 0.05, 0.1, 0.2, 0.5]  # Amplitude for drive output
-frerange = [[60000, 90000], [63500, 64500], [70000, 80000], [71500, 72500]]
+amp2 = [0.01]  # Amplitude for modulation output
+amp1 = [1]  # Amplitude for drive output
+frerange = [[61000, 63000]]
 
 
 def main():
     device = "dev1657"
     daq = ziDAQServer("127.0.0.1", 8005, 1)
-
+    daq.setInt("/dev1657/sigouts/0/on", 1)
+    daq.setInt("/dev1657/sigouts/1/on", 1)
     # Lock-in configuration
     lockin = LockinController(daq, device)
 
@@ -22,7 +23,7 @@ def main():
             for k in range(len(frerange)):
                 start = frerange[k][0]
                 stop = frerange[k][1]
-                samplecount = stop - start
+                samplecount = (stop - start) / 200
                 output_amplitude1 = amp1[i]
                 output_amplitude2 = amp2[j]
                 lockin.configure_modulation(
@@ -41,15 +42,19 @@ def main():
                     start=start,
                     stop=stop,
                     samplecount=samplecount,
-                    maxbandwidth=1,
+                    maxbandwidth=10,
                     xmapping=1,  # 0: linear, 1: logarithmic
+                    settling_time=2.0,  # seconds
+                    inaccuracy=0.00001,
+                    bandwidthcontrol=1,  # 0: manual, 1: fixed, 2: auto
+                    bandwidth=1,  # Hz
                 )
 
                 result = sweeper.run()
                 sweeper.stop()
                 suffix = f"amp{output_amplitude1}V"
-                data = save_sweep_to_csv(
-                    result, device, demod="1", ifplot=True, suffix=suffix
+                demod = save_sweep_to_csv(
+                    result, device, demod=["1", "3"], ifplot=True, suffix=suffix
                 )
 
     # Stop the lock-in outputs

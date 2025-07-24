@@ -5,7 +5,7 @@ class SweeperController:
     def __init__(self, daq, device, gridnode="/dev1657/oscs/1/freq"):
         self.device = device
         self.sweeper = daq.sweep()
-        self.gridnode = gridnode
+        self.gridnode = gridnode  # choose oscillator to sweep
         sweeper = daq.sweep()
         sweeper.set("device", device)
         sweeper.set("xmapping", 1)
@@ -36,16 +36,30 @@ class SweeperController:
         samplecount,
         maxbandwidth=100,
         xmapping=0,  # 0: linear, 1: logarithmic
-        # filtermode=2,
+        settling_time=0,
+        inaccuracy=0.00001,
+        bandwidthcontrol=2,
+        bandwidth=10,
+        minSamples=10,
     ):
         self.sweeper.set("device", self.device)
+        self.sweeper.set("gridnode", self.gridnode)
         self.sweeper.set("start", start)
         self.sweeper.set("stop", stop)
         self.sweeper.set("samplecount", samplecount)
-        # self.sweeper.set("bandwidth", bandwidth)
-        # self.sweeper.set("bandwidthcontrol", filtermode)    # 0:manual, 1:fixed, 2: auto
-        self.sweeper.set("maxbandwidth", maxbandwidth)
         self.sweeper.set("xmapping", xmapping)
+
+        self.sweeper.set(
+            "bandwidthcontrol", bandwidthcontrol
+        )  # 0:manual, 1:fixed, 2: auto
+        if bandwidthcontrol == 1:
+            self.sweeper.set("bandwidth", bandwidth)
+            self.sweeper.set("averaging/sample", minSamples)  # mimimum samples
+
+        if bandwidthcontrol == 2:
+            self.sweeper.set("maxbandwidth", maxbandwidth)
+        self.sweeper.set("settling/time", settling_time)
+        self.sweeper.set("settling/inaccuracy", inaccuracy)
 
         # self.sweeper.set("save/save", 1)
         # self.sweeper.set("save/saveonread", 1)
@@ -54,8 +68,7 @@ class SweeperController:
         # self.sweeper.set("save/fileformat", 1)  # 0=matlab,  1 = CSV
         # self.sweeper.set("save/csvseparator", ";")
 
-    def run(self, demods=["0", "1"], timeout=5000000):
-        self.sweeper.set("gridnode", self.gridnode)
+    def run(self, demods=["0", "1", "3"], timeout=5000000):
         for d in demods:
             self.sweeper.subscribe(f"/{self.device}/demods/{d}/sample")
         self.sweeper.execute()
@@ -68,9 +81,10 @@ class SweeperController:
                 print("Timeout reached before sweep finished.")
                 break
         result = self.sweeper.read()
+        print(result)
         self.sweeper.finish()
         self.sweeper.unsubscribe("*")
-
+        print("Sweep finished.")
         return result
 
     def stop(self):
