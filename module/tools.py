@@ -4,17 +4,16 @@ from datetime import datetime
 import os
 
 
-def save_sweep_to_csv(result, device, demod=["1"], ifplot=True, suffix=""):
-    """
-    Save sweep result of specified demodulator to CSV.
-
-    Parameters:
-        result (dict): Result from sweeper.read()
-        device (str): e.g. 'dev1657'
-        demod list(str): demodulator index, e.g. ['0', '1', ...]
-        save_path (str): Output CSV file path
-    """
+def make_new_folder(base_path: str = "./results", prefix: str = "") -> str:
     timestamp = datetime.now().strftime("%y%m%d%H%M")
+    folder_name = f"{prefix}_{timestamp}"
+    new_folder_path = os.path.join(base_path, folder_name)
+
+    os.makedirs(new_folder_path, exist_ok=True)
+    return new_folder_path, timestamp
+
+
+def save_sweep_to_csv(result, device, demod=["1"], suffix="", path="", timestamp=""):
     combined_df = None
     try:
         for d in demod:
@@ -40,15 +39,14 @@ def save_sweep_to_csv(result, device, demod=["1"], ifplot=True, suffix=""):
             print(f"Saved demod {d} data.")
 
         # If plotting is enabled, plot the sweep data
-        if ifplot:
-            save_path_plot = f"./results/figure/sweepplot_{timestamp}{suffix}.png"
-            plot_sweep(combined_df, save_path=save_path_plot, demod=demod)
+        #     save_path_plot = f"./results/figure/sweepplot_{timestamp}{suffix}.png"
+        #     plot_sweep(combined_df, save_path=save_path_plot)
     except KeyError as e:
         print(f"Demodulator {demod} not found in result. Error: {e}")
 
     if combined_df is not None:
-        file_name = f"sweep_all_{timestamp}{suffix}.csv"
-        save_path = f"./results/data/{file_name}"
+        file_name = f"sweep_{timestamp}_{suffix}.csv"
+        save_path = f"{path}/{file_name}"
         combined_df.to_csv(save_path, index=False)
         print(f"All data saved to {save_path}")
         return combined_df
@@ -57,12 +55,14 @@ def save_sweep_to_csv(result, device, demod=["1"], ifplot=True, suffix=""):
         return None
 
 
-def plot_sweep(df, save_path="", demod=["1", "3"]):
+def plot_sweep(df, demod=["1", "3"], path="", timestamp=""):
     title = "Sweep Result"
-    if not save_path:
+    file_name = f"sweep_{timestamp}.png"
+    save_path = f"{path}/{file_name}"
+    if not path:
         timestamp = datetime.now().strftime("%y%m%d%H%M")
-        file_name = f"sweepplot_{timestamp}.png"
-        save_path = f"./results/figure/{file_name}"
+        file_name = f"sweep_{timestamp}.png"
+        save_path = f"./results/{file_name}"
     amp_cols = [col for col in df.columns if "Amplitude" in col]
     # print(f"Plotting columns: {amp_cols}")
     # print(df)
@@ -78,45 +78,48 @@ def plot_sweep(df, save_path="", demod=["1", "3"]):
     plt.grid(True)
     plt.tight_layout()
 
-    if save_path:
+    if path:
         plt.savefig(save_path, dpi=300)
         print(f"Plot saved to: {save_path}")
     else:
         plt.show()
 
 
-def plot_from_csv(csv_path, column_indices=None, save_path=""):
-    if not os.path.exists(csv_path):
-        raise FileNotFoundError(f"CSV file not found: {csv_path}")
-
-    df = pd.read_csv(csv_path)
-
-    if "Frequency_Hz" not in df.columns:
-        raise ValueError("CSV must contain a 'Frequency_Hz' column.")
-
-    # Get list of column names
-    columns = df.columns.tolist()
-
-    # Determine which columns to plot
-    if column_indices is None:
-        plot_columns = [col for col in columns if col != "Frequency_Hz"]
-    else:
-        plot_columns = []
-        for idx in column_indices:
-            if idx < 0 or idx >= len(columns):
-                raise IndexError(f"Column index {idx} is out of range.")
-            if columns[idx] != "Frequency_Hz":
-                plot_columns.append(columns[idx])
-    print(f"Plotting columns: {plot_columns}")
-
-    # Plot
+def plot_from_csv(csv_paths, column_indices=None, save_path=""):
     plt.figure(figsize=(10, 6))
-    for col in plot_columns:
-        plt.plot(df["Frequency_Hz"], df[col], label=col)
+
+    for csv_path in csv_paths:
+        if not os.path.exists(csv_path):
+            print(f"File not found: {csv_path}")
+            continue
+
+        df = pd.read_csv(csv_path)
+
+        if "Frequency_Hz" not in df.columns:
+            print(f"Frequency_Hz not found in: {csv_path}")
+            continue
+
+        columns = df.columns.tolist()
+        filename = os.path.splitext(os.path.basename(csv_path))[0]
+
+        if column_indices is None:
+            plot_columns = [col for col in columns if col != "Frequency_Hz"]
+        else:
+            plot_columns = []
+            for idx in column_indices:
+                if idx < 0 or idx >= len(columns):
+                    print(f" Invalid index {idx} in: {csv_path}")
+                    continue
+                if columns[idx] != "Frequency_Hz":
+                    plot_columns.append(columns[idx])
+
+        for col in plot_columns:
+            label = f"{filename}_{col}"
+            plt.plot(df["Frequency_Hz"], df[col], label=label)
 
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Value")
-    plt.title("Selected Columns vs Frequency")
+    plt.title("Overlay Sweep Comparison")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -124,6 +127,6 @@ def plot_from_csv(csv_path, column_indices=None, save_path=""):
     if save_path:
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         plt.savefig(save_path, dpi=300)
-        print(f"Plot saved to: {save_path}")
+        print(f"Saved overlay plot: {save_path}")
     else:
         plt.show()

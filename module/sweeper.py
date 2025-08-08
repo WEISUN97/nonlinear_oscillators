@@ -34,7 +34,7 @@ class SweeperController:
         start,
         stop,
         samplecount,
-        maxbandwidth=100,
+        maxbandwidth=10,
         xmapping=0,  # 0: linear, 1: logarithmic
         settling_time=0,
         inaccuracy=0.00001,
@@ -68,7 +68,7 @@ class SweeperController:
         # self.sweeper.set("save/fileformat", 1)  # 0=matlab,  1 = CSV
         # self.sweeper.set("save/csvseparator", ";")
 
-    def run(self, demods=["0", "1", "3"], timeout=5000000):
+    def run(self, demods=["0", "1"], timeout=5000000):
         for d in demods:
             self.sweeper.subscribe(f"/{self.device}/demods/{d}/sample")
         self.sweeper.execute()

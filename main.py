@@ -5,9 +5,9 @@ from module.lockin_config import LockinController
 from module.tools import save_sweep_to_csv
 
 
-amp2 = [0.01]  # Amplitude for modulation output
-amp1 = [1]  # Amplitude for drive output
-frerange = [[61000, 63000]]
+amp2 = [0.4]  # Amplitude for modulation output
+amp1 = [1.25, 1, 0.75, 0.5]  # Amplitude for drive output
+frerange = [[61500, 63000]]
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
             for k in range(len(frerange)):
                 start = frerange[k][0]
                 stop = frerange[k][1]
-                samplecount = (stop - start) / 200
+                samplecount = 1500
                 output_amplitude1 = amp1[i]
                 output_amplitude2 = amp2[j]
                 lockin.configure_modulation(
@@ -42,11 +42,11 @@ def main():
                     start=start,
                     stop=stop,
                     samplecount=samplecount,
-                    maxbandwidth=10,
-                    xmapping=1,  # 0: linear, 1: logarithmic
-                    settling_time=2.0,  # seconds
+                    maxbandwidth=1,
+                    xmapping=0,  # 0: linear, 1: logarithmic
+                    settling_time=0,  # seconds
                     inaccuracy=0.00001,
-                    bandwidthcontrol=1,  # 0: manual, 1: fixed, 2: auto
+                    bandwidthcontrol=2,  # 0: manual, 1: fixed, 2: auto
                     bandwidth=1,  # Hz
                 )
 
@@ -54,7 +54,7 @@ def main():
                 sweeper.stop()
                 suffix = f"amp{output_amplitude1}V"
                 demod = save_sweep_to_csv(
-                    result, device, demod=["1", "3"], ifplot=True, suffix=suffix
+                    result, device, demod=["1"], ifplot=True, suffix=suffix
                 )
 
     # Stop the lock-in outputs

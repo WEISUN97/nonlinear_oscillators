@@ -1,8 +1,23 @@
 from module.tools import plot_from_csv
+from datetime import datetime
 
 
 pathbase = "./results/data/"
-csv_file = f"sweep_2507211322amp0.1V"
-csv_path = pathbase + csv_file + ".csv"
-save_path_plot = f"./results/figure/{csv_file}.png"
-plot_from_csv(csv_path, column_indices=[2], save_path="")
+csv_file = [
+    "sweep_all_2507281046amp1.25V",
+]
+csv_paths = [_ for _ in range(len(csv_file))]
+for i in range(len(csv_file)):
+    csv_paths[i] = pathbase + csv_file[i] + ".csv"
+if len(csv_file) == 1:
+    save_path_plot = f"./results/figure/{csv_file}.png"
+else:
+    save_path_plot = f"./results/figure/sweep_overlay.png"
+
+timestamp = datetime.now().strftime("%y%m%d%H%M")
+plot_from_csv(
+    csv_paths,
+    column_indices=[1],
+    # save_path=f"./results/figure/sweepplot_{timestamp}.png",
+    save_path="",
+)
