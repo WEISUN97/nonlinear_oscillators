@@ -4,9 +4,9 @@ from datetime import datetime
 import os
 
 
-def make_new_folder(base_path: str = "./results", prefix: str = "") -> str:
+def create_new_folder(base_path: str = "./results", prefix: str = "") -> str:
     timestamp = datetime.now().strftime("%y%m%d%H%M")
-    folder_name = f"{prefix}_{timestamp}"
+    folder_name = f"{prefix}{timestamp}"
     new_folder_path = os.path.join(base_path, folder_name)
 
     os.makedirs(new_folder_path, exist_ok=True)

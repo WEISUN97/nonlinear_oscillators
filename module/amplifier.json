@@ -1,0 +1,5 @@
+{
+     "settings": {
+         "amplifier":["GND", "1e^5", "LOW", "FBW", "AC"]
+     }
+}
