@@ -4,9 +4,9 @@ from datetime import datetime
 import os
 
 
-def create_new_folder(base_path: str = "./results", prefix: str = "") -> str:
+def create_new_folder(base_path: str = "./results", suffix: str = "") -> str:
     timestamp = datetime.now().strftime("%y%m%d%H%M")
-    folder_name = f"{prefix}{timestamp}"
+    folder_name = f"{timestamp}{suffix}"
     new_folder_path = os.path.join(base_path, folder_name)
 
     os.makedirs(new_folder_path, exist_ok=True)
@@ -45,7 +45,7 @@ def save_sweep_to_csv(result, device, demod=["1"], suffix="", path="", timestamp
         print(f"Demodulator {demod} not found in result. Error: {e}")
 
     if combined_df is not None:
-        file_name = f"sweep_{timestamp}_{suffix}.csv"
+        file_name = f"sweep_{timestamp}{suffix}.csv"
         save_path = f"{path}/{file_name}"
         combined_df.to_csv(save_path, index=False)
         print(f"All data saved to {save_path}")
@@ -63,12 +63,16 @@ def plot_sweep(df, demod=["1", "3"], path="", timestamp=""):
         timestamp = datetime.now().strftime("%y%m%d%H%M")
         file_name = f"sweep_{timestamp}.png"
         save_path = f"./results/{file_name}"
-    amp_cols = [col for col in df.columns if "Amplitude" in col]
+    amp_cols = [
+        col for col in df.columns if "Amplitude" in col and any(d in col for d in demod)
+    ]
     # print(f"Plotting columns: {amp_cols}")
     # print(df)
 
     plt.figure(figsize=(10, 6))
+    print(amp_cols)
     for col in amp_cols:
+        print(col)
         plt.plot(df["Frequency_Hz"], df[col], label=col)
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Amplitude (V)")
@@ -85,7 +89,7 @@ def plot_sweep(df, demod=["1", "3"], path="", timestamp=""):
         plt.show()
 
 
-def plot_from_csv(csv_paths, column_indices=None, save_path=""):
+def plot_from_csv(csv_paths, column_indices=None, save_path="", show_plot=True):
     plt.figure(figsize=(10, 6))
 
     for csv_path in csv_paths:
@@ -128,5 +132,5 @@ def plot_from_csv(csv_paths, column_indices=None, save_path=""):
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         plt.savefig(save_path, dpi=300)
         print(f"Saved overlay plot: {save_path}")
-    else:
+    if show_plot:
         plt.show()

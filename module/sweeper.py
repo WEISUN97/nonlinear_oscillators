@@ -81,7 +81,7 @@ class SweeperController:
                 print("Timeout reached before sweep finished.")
                 break
         result = self.sweeper.read()
-        print(result)
+        # print(result)
         self.sweeper.finish()
         self.sweeper.unsubscribe("*")
         print("Sweep finished.")

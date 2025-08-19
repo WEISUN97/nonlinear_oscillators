@@ -5,15 +5,32 @@ from module.lockin_config import LockinController
 from module.setting_read import generate_setting, create_json_file
 from module.tools import save_sweep_to_csv, create_new_folder, plot_sweep
 
-
+list1 = []
 setting = {
-    "amp1": [0.5],  # Amplitude for drive output
-    "amp2": [0.4],  # Amplitude for modulation output
-    "frerange": [[60000, 63000]],  # Frequency range for sweeper
+    "amp1": [1],  # Amplitude for modulation output
+    "amp2": [
+        0.023,
+        0.024,
+        0.0241,
+        0.0242,
+        0.0243,
+        0.0244,
+        0.0245,
+        0.0246,
+        0.0247,
+        0.0248,
+        0.0249,
+        0.025,
+        0.026,
+    ],  # Amplitude for driven output
+    "frerange": [[61000, 66000]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 100,  # Maximum bandwidth for sweeper
-    "samplecount": 10,  # Number of samples for sweeper
+    "maxbandwidth": 5,  # Maximum bandwidth for sweeper
+    "samplecount": 2000,  # Number of samples for sweeper
+    "settling_time": 0,  # Settling time for sweeper
+    "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
+    "demods": ["1", "3"],  # Demodulator channels to use
 }
 
 
@@ -34,60 +51,71 @@ def main(params={}):
     inaccuracy = params.get("inaccuracy")
     maxbandwidth = params.get("maxbandwidth")
     samplecount = params.get("samplecount")
+    settling_time = params.get("settling_time")
+    bandwidthcontrol = params.get("bandwidthcontrol")
+    demods = params.get("demods", ["1", "3"])
 
-    for i in range(len(amp1)):
-        for j in range(len(amp2)):
-            for k in range(len(frerange)):
-                start = frerange[k][0]
-                stop = frerange[k][1]
-                samplecount = samplecount
-                output_amplitude1 = amp1[i]
-                output_amplitude2 = amp2[j]
-                lockin.configure_modulation(
-                    filter_order=8,
-                    output_amplitude1=output_amplitude1,
-                    output_amplitude2=output_amplitude2,
-                )
+    start = frerange[0]
+    stop = frerange[1]
+    samplecount = samplecount
+    output_amplitude1 = amp1
+    output_amplitude2 = amp2
+    lockin.configure_modulation(
+        filter_order=8,
+        output_amplitude1=output_amplitude1,
+        output_amplitude2=output_amplitude2,
+    )
 
-                # Sweeper
-                sweeper = SweeperController(
-                    daq,
-                    device,
-                    gridnode=f"/{device}/oscs/1/freq",
-                )
-                sweeper.configure(
-                    start=start,
-                    stop=stop,
-                    samplecount=samplecount,
-                    maxbandwidth=maxbandwidth,
-                    xmapping=0,  # 0: linear, 1: logarithmic
-                    settling_time=0,  # seconds
-                    inaccuracy=inaccuracy,
-                    bandwidthcontrol=2,  # 0: manual, 1: fixed, 2: auto
-                    bandwidth=bandwidth,  # Hz
-                )
+    # Sweeper
+    sweeper = SweeperController(
+        daq,
+        device,
+        gridnode=f"/{device}/oscs/1/freq",
+    )
+    sweeper.configure(
+        start=start,
+        stop=stop,
+        samplecount=samplecount,
+        maxbandwidth=maxbandwidth,
+        xmapping=0,  # 0: linear, 1: logarithmic
+        settling_time=settling_time,  # seconds
+        inaccuracy=inaccuracy,
+        bandwidthcontrol=bandwidthcontrol,  # 0: manual, 1: fixed, 2: auto
+        bandwidth=bandwidth,  # Hz
+    )
 
-                result = sweeper.run()
-                sweeper.stop()
-                suffix = f"amp{output_amplitude1}V"
-                generate_setting
-                path, timestamp = create_new_folder()
-                create_json_file(path=path, timestamp=timestamp)
-                generate_setting(setting=setting, filename=timestamp, folder=path)
-                df = save_sweep_to_csv(
-                    result,
-                    device,
-                    demod=["1"],
-                    suffix=suffix,
-                    path=path,
-                    timestamp=timestamp,
-                )
-                plot_sweep(df, path=path, timestamp=timestamp, demod=["1"])
-
-    # Stop the lock-in outputs
-    daq.setInt("/dev1657/sigouts/0/on", 0)
-    daq.setInt("/dev1657/sigouts/1/on", 0)
+    result = sweeper.run(demods=demods)
+    sweeper.stop()
+    suffix = f"_amp1_{output_amplitude1}_amp2_{output_amplitude2}"
+    generate_setting
+    path, timestamp = create_new_folder(suffix=suffix)
+    list1.append(f"{timestamp}{suffix}")
+    create_json_file(path=path, timestamp=timestamp)
+    generate_setting(setting=params, filename=timestamp, folder=path)
+    df = save_sweep_to_csv(
+        result,
+        device,
+        demod=demods,
+        suffix=suffix,
+        path=path,
+        timestamp=timestamp,
+    )
+    plot_sweep(df, path=path, timestamp=timestamp, demod=["1"])
+    return daq
 
 
 if __name__ == "__main__":
-    main(params=setting)
+    setting_one = {}
+    setting_one = setting.copy()
+    for i in range(len(setting["amp1"])):
+        setting_one["amp1"] = setting["amp1"][i]
+        for j in range(len(setting["amp2"])):
+            setting_one["amp2"] = setting["amp2"][j]
+            for k in range(len(setting["frerange"])):
+                setting_one["frerange"] = setting["frerange"][k]
+                print(f"Running with settings: {setting_one}")
+                daq = main(params=setting_one)
+    # Stop the lock-in outputs
+    daq.setInt("/dev1657/sigouts/0/on", 0)
+    daq.setInt("/dev1657/sigouts/1/on", 0)
+    print(list1)
