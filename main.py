@@ -12,19 +12,19 @@ from module.tools import (
 from module.json_merge import merge_demods_from_files
 
 list1 = []
+timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [
-        0.01,
-    ],  # Amplitude for driven output
-    "frerange": [[61000, 66000]],  # Frequency range for sweeper
+    "amp2": [0.023, 0.024, 0.025],  # Amplitude for driven output
+    "frerange": [[58000, 65000]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 100,  # Maximum bandwidth for sweeper
-    "samplecount": 10,  # Number of samples for sweeper
+    "samplecount": 1000,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
+    "avagering_sample": 1,
 }
 
 
@@ -48,6 +48,7 @@ def main(params={}):
     settling_time = params.get("settling_time")
     bandwidthcontrol = params.get("bandwidthcontrol")
     demods = params.get("demods", ["1", "3"])
+    avagering_sample = params.get("avagering_sample")
 
     start = frerange[0]
     stop = frerange[1]
@@ -76,6 +77,7 @@ def main(params={}):
         inaccuracy=inaccuracy,
         bandwidthcontrol=bandwidthcontrol,  # 0: manual, 1: fixed, 2: auto
         bandwidth=bandwidth,  # Hz
+        avagering_sample=avagering_sample,
     )
 
     result = sweeper.run(demods=demods)
@@ -85,6 +87,7 @@ def main(params={}):
     path, timestamp = create_new_folder(suffix=suffix)
     create_data_json(result=result, path=path, timestamp=timestamp)
     list1.append(f"{timestamp}{suffix}")
+    timestamps.append(timestamp)
     create_json_file(path=path, timestamp=timestamp)
     generate_setting(setting=params, filename=timestamp, folder=path)
     df = save_sweep_to_csv(
@@ -113,4 +116,13 @@ if __name__ == "__main__":
     # Stop the lock-in outputs
     daq.setInt("/dev1657/sigouts/0/on", 0)
     daq.setInt("/dev1657/sigouts/1/on", 0)
+
+    merged = merge_demods_from_files(
+        timestamps,
+        list1,
+        device_id="dev1657",
+        demod_ids=("1", "3"),
+        fields=("frequency", "x", "y", "r", "phase"),
+    )
+
     print(list1)

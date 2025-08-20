@@ -46,7 +46,8 @@ def extract_fields_from_demod(
 
 
 def merge_demods_from_files(
-    paths: List[str],
+    timestamps: List[str],
+    foldernames: List[str],
     device_id: str = "dev1657",
     demod_ids: Tuple[str, ...] = ("1", "3"),
     fields: Tuple[str, ...] = ("frequency", "x", "y", "r", "phase"),
@@ -61,8 +62,10 @@ def merge_demods_from_files(
     - name = file stem by default, or overridden by name_map[path]
     """
     merged = {}
-
-    for p in paths:
+    counter = 0
+    for p in timestamps:
+        p = f"./results/{foldernames[counter]}/alldatas_{p}.json"
+        counter += 1
         data = load_json(p)
         name = (
             name_map[p]
@@ -92,15 +95,18 @@ def merge_demods_from_files(
 
 if __name__ == "__main__":
     files = [
-        "./results/2508191839_amp1_1_amp2_0.01/alldatas_2508191839.json",
-        "./results/2508191850_amp1_1_amp2_0.01/alldatas_2508191850.json",
+        "2508191839",
+        "2508191850",
     ]
-    # Optional custom names:
-    # name_map = {r"C:\data\name1.json": "sweep_A", r"C:\data\name2.json": "sweep_B"}
+    foldernames = [
+        "2508191839_amp1_1_amp2_0.01",
+        "2508191850_amp1_1_amp2_0.01",
+    ]
     name_map = None
 
     merged = merge_demods_from_files(
         files,
+        foldernames,
         device_id="dev1657",
         demod_ids=("1", "3"),
         fields=("frequency", "x", "y", "r", "phase"),

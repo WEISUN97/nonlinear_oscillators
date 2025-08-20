@@ -41,6 +41,7 @@ class SweeperController:
         bandwidthcontrol=2,
         bandwidth=10,
         minSamples=10,
+        avagering_sample=1,
     ):
         self.sweeper.set("device", self.device)
         self.sweeper.set("gridnode", self.gridnode)
@@ -48,6 +49,7 @@ class SweeperController:
         self.sweeper.set("stop", stop)
         self.sweeper.set("samplecount", samplecount)
         self.sweeper.set("xmapping", xmapping)
+        self.sweeper.set("averaging/sample", avagering_sample)
 
         self.sweeper.set(
             "bandwidthcontrol", bandwidthcontrol
