@@ -20,7 +20,7 @@ def save_sweep_to_csv(result, device, demod=["1"], suffix="", path="", timestamp
     try:
         for d in demod:
             sample_data = result[device]["demods"][d]["sample"][0][0]
-            freq = sample_data["grid"]
+            freq = sample_data["frequency"]
             amplitude = sample_data["r"]
             phase = sample_data["phase"]
 

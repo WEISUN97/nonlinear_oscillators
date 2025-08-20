@@ -45,7 +45,7 @@ def save_json(obj: dict, out_path: str):
 if __name__ == "__main__":
 
     files = [
-        "./results/2508191839_amp1_1_amp2_0.01/alldatas_2508191839.json",
+        "./results/2508191850_amp1_1_amp2_0.01/alldatas_2508191850.json",
         "./results/2508191850_amp1_1_amp2_0.01/alldatas_2508191850.json",
     ]
     name_map = None
