@@ -15,16 +15,34 @@ list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [0.023, 0.024, 0.025],  # Amplitude for driven output
+    "amp2": [
+        0.023,
+        0.024,
+        0.0241,
+        0.0242,
+        0.0243,
+        0.0244,
+        0.0245,
+        0.0246,
+        0.0247,
+        0.0248,
+        0.0249,
+        0.025,
+        0.026,
+        0.027,
+        0.028,
+        0.029,
+        0.03,
+    ],  # Amplitude for driven output
     "frerange": [[58000, 65000]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 100,  # Maximum bandwidth for sweeper
+    "maxbandwidth": 10,  # Maximum bandwidth for sweeper
     "samplecount": 1000,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
-    "avagering_sample": 1,
+    "avagering_sample": 10,
 }
 
 
