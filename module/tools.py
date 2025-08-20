@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
 import os
+import json
+from module.setting_read import purify
 
 
 def create_new_folder(base_path: str = "./results", suffix: str = "") -> str:
@@ -134,3 +136,12 @@ def plot_from_csv(csv_paths, column_indices=None, save_path="", show_plot=True):
         print(f"Saved overlay plot: {save_path}")
     if show_plot:
         plt.show()
+
+
+def create_data_json(result={}, path="", timestamp=""):
+    pure_json_path = os.path.join(path, f"alldatas_{timestamp}.json")
+    with open(pure_json_path, "w", encoding="utf-8") as f:
+        json.dump(purify(result), f, indent=2, ensure_ascii=False)
+
+    print(f"[OK] Settings saved to:\n {pure_json_path}")
+    return 0

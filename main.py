@@ -3,31 +3,24 @@ from module.scope import ScopeController
 from module.sweeper import SweeperController
 from module.lockin_config import LockinController
 from module.setting_read import generate_setting, create_json_file
-from module.tools import save_sweep_to_csv, create_new_folder, plot_sweep
+from module.tools import (
+    save_sweep_to_csv,
+    create_new_folder,
+    plot_sweep,
+    create_data_json,
+)
 
 list1 = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.023,
-        0.024,
-        0.0241,
-        0.0242,
-        0.0243,
-        0.0244,
-        0.0245,
-        0.0246,
-        0.0247,
-        0.0248,
-        0.0249,
-        0.025,
-        0.026,
+        0.01,
     ],  # Amplitude for driven output
     "frerange": [[61000, 66000]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 5,  # Maximum bandwidth for sweeper
-    "samplecount": 2000,  # Number of samples for sweeper
+    "maxbandwidth": 100,  # Maximum bandwidth for sweeper
+    "samplecount": 10,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
@@ -89,6 +82,7 @@ def main(params={}):
     suffix = f"_amp1_{output_amplitude1}_amp2_{output_amplitude2}"
     generate_setting
     path, timestamp = create_new_folder(suffix=suffix)
+    create_data_json(result=result, path=path, timestamp=timestamp)
     list1.append(f"{timestamp}{suffix}")
     create_json_file(path=path, timestamp=timestamp)
     generate_setting(setting=params, filename=timestamp, folder=path)

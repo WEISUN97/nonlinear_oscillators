@@ -119,7 +119,7 @@ def create_json_file(
     cfg = get_lockin_settings(host=HOST, port=PORT, api_level=API_LEVEL, device=DEVICE)
 
     # ---- save a pure json
-    pure_json_path = os.path.join(path, f"alldatas_{timestamp}.json")
+    pure_json_path = os.path.join(path, f"allsettings_{timestamp}.json")
     with open(pure_json_path, "w", encoding="utf-8") as f:
         json.dump(purify(cfg), f, indent=2, ensure_ascii=False)
 
@@ -137,9 +137,9 @@ def generate_setting(setting, filename="", folder=""):
 
     if filename is None:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"setting_{timestamp}.json"
+        filename = f"settings_{timestamp}.json"
     else:
-        filename = f"setting_{filename}.json"
+        filename = f"settings_{filename}.json"
 
     full_path = os.path.join(folder, filename)
 
