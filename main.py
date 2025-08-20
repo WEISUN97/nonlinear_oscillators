@@ -9,6 +9,7 @@ from module.tools import (
     plot_sweep,
     create_data_json,
 )
+from module.json_merge import merge_demods_from_files
 
 list1 = []
 setting = {
