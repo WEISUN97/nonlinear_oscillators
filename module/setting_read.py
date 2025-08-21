@@ -112,7 +112,7 @@ def find_first_osc_data(cfg: Dict[str, Any], device: str) -> Any:
     return None
 
 
-def create_json_file(
+def create_allsettings_json(
     HOST="127.0.0.1", PORT=8005, API_LEVEL=1, DEVICE="dev1657", path="", timestamp=""
 ):
     # ---- get setting ----
@@ -165,7 +165,9 @@ if __name__ == "__main__":
     }
     # ---- create output dir ----
     path, timestamp = create_new_folder(prefix="")
-    create_json_file(HOST, PORT, API_LEVEL, DEVICE, path=path, timestamp=timestamp)
+    create_allsettings_json(
+        HOST, PORT, API_LEVEL, DEVICE, path=path, timestamp=timestamp
+    )
     generate_setting(setting=setting, filename=timestamp, folder=path)
 
     # ---- save a json----

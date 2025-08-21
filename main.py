@@ -2,7 +2,8 @@ from zhinst.core import ziDAQServer
 from module.scope import ScopeController
 from module.sweeper import SweeperController
 from module.lockin_config import LockinController
-from module.setting_read import generate_setting, create_json_file
+import json
+from module.setting_read import generate_setting, create_allsettings_json
 from module.tools import (
     save_sweep_to_csv,
     create_new_folder,
@@ -16,37 +17,26 @@ timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.023,
-        0.024,
-        0.0241,
-        0.0242,
-        0.0243,
-        0.0244,
-        0.0245,
-        0.0246,
-        0.0247,
-        0.0248,
-        0.0249,
         0.025,
-        0.026,
-        0.027,
-        0.028,
-        0.029,
         0.03,
+        0.035,
+        0.04,
+        0.045,
+        0.05,
     ],  # Amplitude for driven output
     "frerange": [[58000, 65000]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 10,  # Maximum bandwidth for sweeper
+    "maxbandwidth": 100,  # Maximum bandwidth for sweeper
     "samplecount": 1000,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
-    "avagering_sample": 10,
+    "avagering_sample": 1,
 }
 
 
-def main(params={}):
+def main(params={}, basepath="./results"):
     device = "dev1657"
     daq = ziDAQServer("127.0.0.1", 8005, 1)
     daq.setInt("/dev1657/sigouts/0/on", 1)
@@ -102,11 +92,11 @@ def main(params={}):
     sweeper.stop()
     suffix = f"_amp1_{output_amplitude1}_amp2_{output_amplitude2}"
     generate_setting
-    path, timestamp = create_new_folder(suffix=suffix)
-    create_data_json(result=result, path=path, timestamp=timestamp)
+    path, timestamp = create_new_folder(base_path=basepath, suffix=suffix)
+    create_data_json(result=result, path=path, timestamp="alldatas_" + timestamp)
     list1.append(f"{timestamp}{suffix}")
     timestamps.append(timestamp)
-    create_json_file(path=path, timestamp=timestamp)
+    create_allsettings_json(path=path, timestamp=timestamp)
     generate_setting(setting=params, filename=timestamp, folder=path)
     df = save_sweep_to_csv(
         result,
@@ -121,6 +111,8 @@ def main(params={}):
 
 
 if __name__ == "__main__":
+    foldername = "250821_01"
+    basepath, t = create_new_folder(base_path="./results", suffix=foldername)
     setting_one = {}
     setting_one = setting.copy()
     for i in range(len(setting["amp1"])):
@@ -130,7 +122,7 @@ if __name__ == "__main__":
             for k in range(len(setting["frerange"])):
                 setting_one["frerange"] = setting["frerange"][k]
                 print(f"Running with settings: {setting_one}")
-                daq = main(params=setting_one)
+                daq = main(params=setting_one, basepath=basepath)
     # Stop the lock-in outputs
     daq.setInt("/dev1657/sigouts/0/on", 0)
     daq.setInt("/dev1657/sigouts/1/on", 0)
@@ -141,6 +133,11 @@ if __name__ == "__main__":
         device_id="dev1657",
         demod_ids=("1", "3"),
         fields=("frequency", "x", "y", "r", "phase"),
+        parent_folder=basepath,
     )
-
+    # generate file name
+    data = {"file_name": list1}
+    create_data_json(
+        result=data, path=basepath, timestamp=f"{foldername}_all_file_names"
+    )
     print(list1)

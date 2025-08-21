@@ -8,10 +8,13 @@ from module.setting_read import purify
 
 def create_new_folder(base_path: str = "./results", suffix: str = "") -> str:
     timestamp = datetime.now().strftime("%y%m%d%H%M")
-    folder_name = f"{timestamp}{suffix}"
+    if base_path == "./results":
+        folder_name = suffix
+    else:
+        folder_name = f"{timestamp}{suffix}"
     new_folder_path = os.path.join(base_path, folder_name)
 
-    os.makedirs(new_folder_path, exist_ok=True)
+    os.makedirs(new_folder_path, exist_ok=False)
     return new_folder_path, timestamp
 
 
@@ -139,9 +142,7 @@ def plot_from_csv(csv_paths, column_indices=None, save_path="", show_plot=True):
 
 
 def create_data_json(result={}, path="", timestamp=""):
-    pure_json_path = os.path.join(path, f"alldatas_{timestamp}.json")
+    pure_json_path = os.path.join(path, f"{timestamp}.json")
     with open(pure_json_path, "w", encoding="utf-8") as f:
         json.dump(purify(result), f, indent=2, ensure_ascii=False)
-
-    print(f"[OK] Settings saved to:\n {pure_json_path}")
     return 0

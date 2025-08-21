@@ -52,6 +52,7 @@ def merge_demods_from_files(
     demod_ids: Tuple[str, ...] = ("1", "3"),
     fields: Tuple[str, ...] = ("frequency", "x", "y", "r", "phase"),
     name_map: Optional[Dict[str, str]] = None,
+    parent_folder: str = "./results",
 ) -> Dict[str, dict]:
     """
     Read multiple JSONs and build:
@@ -64,7 +65,7 @@ def merge_demods_from_files(
     merged = {}
     counter = 0
     for p in timestamps:
-        p = f"./results/{foldernames[counter]}/alldatas_{p}.json"
+        p = f"{parent_folder}/{foldernames[counter]}/alldatas_{p}.json"
         counter += 1
         data = load_json(p)
         name = (
@@ -86,7 +87,11 @@ def merge_demods_from_files(
             demods_out[demod_id] = picked  # {} if missing; fine
 
         merged[name] = {"demods": demods_out}
-    with open("./results/merged_demods.json", "w", encoding="utf-8") as f:
+    with open(
+        f"{parent_folder}/{parent_folder[10:]}_merged_sweeps.json",
+        "w",
+        encoding="utf-8",
+    ) as f:
         json.dump(merged, f, indent=2, ensure_ascii=False)
     return merged
 
