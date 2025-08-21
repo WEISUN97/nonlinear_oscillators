@@ -1,26 +1,15 @@
 from module.tools import plot_from_csv
 from datetime import datetime
 
-
-pathbase = "./results/"
+folder = "250821_01"
+pathbase = f"./results/{folder}/"
 folder_name = [
-    "2508201743_amp1_1_amp2_0.023",
-    "2508201751_amp1_1_amp2_0.024",
-    "2508201759_amp1_1_amp2_0.0241",
-    "2508201807_amp1_1_amp2_0.0242",
-    "2508201815_amp1_1_amp2_0.0243",
-    "2508201823_amp1_1_amp2_0.0244",
-    "2508201831_amp1_1_amp2_0.0245",
-    "2508201839_amp1_1_amp2_0.0246",
-    "2508201846_amp1_1_amp2_0.0247",
-    "2508201854_amp1_1_amp2_0.0248",
-    "2508201902_amp1_1_amp2_0.0249",
-    "2508201910_amp1_1_amp2_0.025",
-    "2508201918_amp1_1_amp2_0.026",
-    "2508201926_amp1_1_amp2_0.027",
-    "2508201934_amp1_1_amp2_0.028",
-    "2508201942_amp1_1_amp2_0.029",
-    "2508201949_amp1_1_amp2_0.03",
+    "2508210948_amp1_1_amp2_0.025",
+    "2508210956_amp1_1_amp2_0.03",
+    "2508211004_amp1_1_amp2_0.035",
+    "2508211012_amp1_1_amp2_0.04",
+    "2508211020_amp1_1_amp2_0.045",
+    "2508211027_amp1_1_amp2_0.05",
 ]
 csv_paths = [_ for _ in range(len(folder_name))]
 for i in range(len(folder_name)):
@@ -30,5 +19,13 @@ timestamp = datetime.now().strftime("%y%m%d%H%M")
 plot_from_csv(
     csv_paths,
     column_indices=[1],
-    save_path=f"./results/figure/sweepplot_{timestamp}.png",
+    save_path=f"./results/figure/open_loop_sweep_{folder}.png",
+    title=f"Open Loop Sweep {folder}",
+)
+plot_from_csv(
+    csv_paths,
+    column_indices=[1],
+    save_path=f"./results/{folder}/open_loop_sweep_{folder}.png",
+    show_plot=False,
+    title=f"Open Loop Sweep {folder}",
 )

@@ -17,12 +17,7 @@ timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.025,
-        0.03,
-        0.035,
-        0.04,
-        0.045,
-        0.05,
+        0.055,
     ],  # Amplitude for driven output
     "frerange": [[58000, 65000]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
@@ -111,7 +106,7 @@ def main(params={}, basepath="./results"):
 
 
 if __name__ == "__main__":
-    foldername = "250821_01"
+    foldername = "250821_00"
     basepath, t = create_new_folder(base_path="./results", suffix=foldername)
     setting_one = {}
     setting_one = setting.copy()
