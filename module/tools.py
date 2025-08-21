@@ -94,7 +94,9 @@ def plot_sweep(df, demod=["1", "3"], path="", timestamp=""):
         plt.show()
 
 
-def plot_from_csv(csv_paths, column_indices=None, save_path="", show_plot=True):
+def plot_from_csv(
+    csv_paths, column_indices=None, save_path="", show_plot=True, title=""
+):
     plt.figure(figsize=(10, 6))
 
     for csv_path in csv_paths:
@@ -128,7 +130,7 @@ def plot_from_csv(csv_paths, column_indices=None, save_path="", show_plot=True):
 
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Value")
-    plt.title("Overlay Sweep Comparison")
+    plt.title(title)
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
