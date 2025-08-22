@@ -12,17 +12,19 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250822_05"
+foldername = "250822_06"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
         0.0005,
-        0.00075,
-        0.001,
+        0.0004,
+        0.0003,
+        0.0002,
+        0.0001,
     ],  # Amplitude for driven output
-    "frerange": [[58200, 58400]],  # Frequency range for sweeper
+    "frerange": [[58150, 58250]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 10,  # Maximum bandwidth for sweeper
