@@ -1,17 +1,12 @@
 from module.tools import plot_from_csv
 from datetime import datetime
 
-folder = "250821_02"
+folder = "250822_01"
 pathbase = f"./results/{folder}/"
 folder_name = [
-    "2508211136_amp1_1_amp2_0.04",
-    "2508211144_amp1_1_amp2_0.041",
-    "2508211152_amp1_1_amp2_0.042",
-    "2508211200_amp1_1_amp2_0.043",
-    "2508211208_amp1_1_amp2_0.044",
-    "2508211215_amp1_1_amp2_0.045",
-    "2508211223_amp1_1_amp2_0.046",
-    "2508211231_amp1_1_amp2_0.047",
+    "2508220924_amp1_1_amp2_0.001",
+    "2508220926_amp1_1_amp2_0.002",
+    "2508220928_amp1_1_amp2_0.003",
 ]
 csv_paths = [_ for _ in range(len(folder_name))]
 for i in range(len(folder_name)):

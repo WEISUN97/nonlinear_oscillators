@@ -12,29 +12,27 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
+foldername = "250822_05"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.040,
-        0.041,
-        0.042,
-        0.043,
-        0.044,
-        0.045,
-        0.046,
-        0.047,
+        0.0005,
+        0.00075,
+        0.001,
     ],  # Amplitude for driven output
-    "frerange": [[58000, 65000]],  # Frequency range for sweeper
+    "frerange": [[58200, 58400]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 100,  # Maximum bandwidth for sweeper
-    "samplecount": 1000,  # Number of samples for sweeper
+    "maxbandwidth": 10,  # Maximum bandwidth for sweeper
+    "samplecount": 200,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
-    "avagering_sample": 1,
+    "avagering_sample": 100,
+    "output_range1": 1,  # Output range for modulation output
+    "output_range2": 0.01,  # Output range for driven output
 }
 
 
@@ -59,6 +57,8 @@ def main(params={}, basepath="./results"):
     bandwidthcontrol = params.get("bandwidthcontrol")
     demods = params.get("demods", ["1", "3"])
     avagering_sample = params.get("avagering_sample")
+    output_range1 = params.get("output_range1")
+    output_range2 = params.get("output_range2")
 
     start = frerange[0]
     stop = frerange[1]
@@ -69,6 +69,8 @@ def main(params={}, basepath="./results"):
         filter_order=8,
         output_amplitude1=output_amplitude1,
         output_amplitude2=output_amplitude2,
+        output_range1=output_range1,
+        output_range2=output_range2,
     )
 
     # Sweeper
@@ -113,7 +115,6 @@ def main(params={}, basepath="./results"):
 
 
 if __name__ == "__main__":
-    foldername = "250821_02"
     basepath, t = create_new_folder(base_path="./results", suffix=foldername)
     setting_one = {}
     setting_one = setting.copy()
