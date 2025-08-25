@@ -4,11 +4,9 @@ from datetime import datetime
 folder = "250825_01"
 pathbase = f"./results/{folder}/"
 folder_name = [
-    "2508221818_amp1_1_amp2_0.0005",
-    "2508221839_amp1_1_amp2_0.0004",
-    "2508221901_amp1_1_amp2_0.0003",
-    "2508221923_amp1_1_amp2_0.0002",
-    "2508221944_amp1_1_amp2_0.0001",
+    "2508251014_amp1_1_amp2_0.1",
+    "2508251036_amp1_1_amp2_0.2",
+    "2508251058_amp1_1_amp2_0.5",
 ]
 csv_paths = [_ for _ in range(len(folder_name))]
 for i in range(len(folder_name)):
