@@ -12,7 +12,7 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250822_06"
+foldername = "250825_01"
 list1 = []
 timestamps = []
 setting = {

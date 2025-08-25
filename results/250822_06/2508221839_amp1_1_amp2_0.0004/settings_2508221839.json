@@ -1,0 +1,32 @@
+{
+  "amp1": 1,
+  "amp2": 0.0004,
+  "frerange": [
+    58150,
+    58250
+  ],
+  "bandwidth": 1,
+  "inaccuracy": 1e-05,
+  "maxbandwidth": 10,
+  "samplecount": 200,
+  "settling_time": 0,
+  "bandwidthcontrol": 2,
+  "demods": [
+    "1",
+    "3"
+  ],
+  "avagering_sample": 100,
+  "output_range1": 1,
+  "output_range2": 0.01,
+  "Other": {
+    "settings": {
+      "amplifier": [
+        "GND",
+        "1e^5",
+        "LOW",
+        "FBW",
+        "AC"
+      ]
+    }
+  }
+}
