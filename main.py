@@ -23,8 +23,8 @@ setting = {
     "frerange": [[57210, 57240]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 1,  # Maximum bandwidth for sweeper
-    "samplecount": 1000,  # Number of samples for sweeper
+    "maxbandwidth": 10,  # Maximum bandwidth for sweeper
+    "samplecount": 300,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
