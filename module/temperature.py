@@ -138,7 +138,7 @@ if __name__ == "__main__":
     # Adjust the COM port as needed
     mk2000 = MK2000(serial_port="COM4")
     data, csv_path = mk2000.mk2000_read_temperature(
-        sample_rate=1, duration=5, formatted_time=formatted_time
+        sample_rate=1, duration=43200, formatted_time=formatted_time
     )
     # Close the connection
     mk2000.close_mk2000()

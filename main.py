@@ -2,7 +2,6 @@ from zhinst.core import ziDAQServer
 from module.scope import ScopeController
 from module.sweeper import SweeperController
 from module.lockin_config import LockinController
-import json
 from module.setting_read import generate_setting, create_allsettings_json
 from module.tools import (
     save_sweep_to_csv,
@@ -12,7 +11,7 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250825_03"
+foldername = "250826_01"
 list1 = []
 timestamps = []
 setting = {
@@ -20,7 +19,7 @@ setting = {
     "amp2": [
         0.0003,
     ],  # Amplitude for driven output
-    "frerange": [[57210, 57240]],  # Frequency range for sweeper
+    "frerange": [[56900, 57200]],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 10,  # Maximum bandwidth for sweeper
