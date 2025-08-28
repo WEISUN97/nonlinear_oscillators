@@ -11,23 +11,29 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250826_01"
+foldername = "250827_01"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
         0.0003,
+        0.0003,
+        0.0003,
     ],  # Amplitude for driven output
-    "frerange": [[56900, 57200]],  # Frequency range for sweeper
+    "frerange": [
+        [56710, 56735],
+        [56700, 56725],
+        [56690, 56715],
+    ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 10,  # Maximum bandwidth for sweeper
-    "samplecount": 300,  # Number of samples for sweeper
+    "maxbandwidth": 0.5,  # Maximum bandwidth for sweeper
+    "samplecount": 150,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "3"],  # Demodulator channels to use
-    "avagering_sample": 100,
+    "avagering_sample": 10,
     "output_range1": 1,  # Output range for modulation output
     "output_range2": 1,  # Output range for driven output
 }
@@ -119,10 +125,10 @@ if __name__ == "__main__":
         setting_one["amp1"] = setting["amp1"][i]
         for j in range(len(setting["amp2"])):
             setting_one["amp2"] = setting["amp2"][j]
-            for k in range(len(setting["frerange"])):
-                setting_one["frerange"] = setting["frerange"][k]
-                print(f"Running with settings: {setting_one}")
-                daq = main(params=setting_one, basepath=basepath)
+            # for k in range(len(setting["frerange"])):
+            setting_one["frerange"] = setting["frerange"][i]
+            print(f"Running with settings: {setting_one}")
+            daq = main(params=setting_one, basepath=basepath)
     # Stop the lock-in outputs
     daq.setInt("/dev1657/sigouts/0/on", 0)
     daq.setInt("/dev1657/sigouts/1/on", 0)

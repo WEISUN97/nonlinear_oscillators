@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import os
 import json
-from setting_read import purify
+from module.setting_read import purify
 import csv
 
 
