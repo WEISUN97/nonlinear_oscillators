@@ -22,7 +22,7 @@
     "settings": {
       "amplifier": [
         "GND",
-        "1e^5",
+        "1e^4",
         "LOW",
         "FBW",
         "AC"
