@@ -11,28 +11,25 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250829_01"
+foldername = "250902_02"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.0003,
-        0.0003,
-        0.0003,
+        0.005,
     ],  # Amplitude for driven output
     "frerange": [
-        [56530, 56538],
-        [56530, 56538],
-        [56620, 56528],
+        # [56320, 56380],
+        [56320, 57000],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 0.1,  # Maximum bandwidth for sweeper
-    "samplecount": 500,  # Number of samples for sweeper
+    "maxbandwidth": 0.5,  # Maximum bandwidth for sweeper
+    "samplecount": 100,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
-    "demods": ["1", "3"],  # Demodulator channels to use
+    "demods": ["1", "2", "3"],  # Demodulator channels to use
     "avagering_sample": 10,
     "output_range1": 1,  # Output range for modulation output
     "output_range2": 1,  # Output range for driven output
@@ -58,7 +55,7 @@ def main(params={}, basepath="./results"):
     samplecount = params.get("samplecount")
     settling_time = params.get("settling_time")
     bandwidthcontrol = params.get("bandwidthcontrol")
-    demods = params.get("demods", ["1", "3"])
+    demods = params.get("demods")
     avagering_sample = params.get("avagering_sample")
     output_range1 = params.get("output_range1")
     output_range2 = params.get("output_range2")
@@ -137,7 +134,7 @@ if __name__ == "__main__":
         timestamps,
         list1,
         device_id="dev1657",
-        demod_ids=("1", "3"),
+        demod_ids=("1", "2", "3"),
         fields=("frequency", "x", "y", "r", "phase"),
         parent_folder=basepath,
     )

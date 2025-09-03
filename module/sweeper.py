@@ -70,7 +70,7 @@ class SweeperController:
         # self.sweeper.set("save/fileformat", 1)  # 0=matlab,  1 = CSV
         # self.sweeper.set("save/csvseparator", ";")
 
-    def run(self, demods=["0", "1"], timeout=5000000):
+    def run(self, demods=["0", "1", "2", "3"], timeout=5000000):
         for d in demods:
             self.sweeper.subscribe(f"/{self.device}/demods/{d}/sample")
         self.sweeper.execute()
