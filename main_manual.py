@@ -64,6 +64,7 @@ def main(params={}, basepath="./results"):
             }
         }
     }
+    counter = 1
     for f in np.linspace(start, stop, samplecount):
         daq.set("/dev1657/oscs/1/freq", f)
         for d in demods:
@@ -76,7 +77,9 @@ def main(params={}, basepath="./results"):
             demod_data["frequency"].append(f)
             demod_data["r"].append(R)
             demod_data["phase"].append(Theta)
+        print(f"Progress: {(counter / samplecount * 100):.2f}%")
         time.sleep(wait_time)
+        counter += 1
 
     suffix = f"_amp1_{output_amplitude1}_amp2_{output_amplitude2}"
     path, timestamp = create_new_folder(base_path=basepath, suffix=suffix)
