@@ -51,7 +51,7 @@ def merge_demods_from_files(
     device_id: str = "dev1657",
     demod_ids: Tuple[str, ...] = ("1", "3"),
     fields: Tuple[str, ...] = ("frequency", "x", "y", "r", "phase"),
-    name_map: Optional[Dict[str, str]] = None,
+    whole_name: List[str] = [""],
     parent_folder: str = "./results",
 ) -> Dict[str, dict]:
     """
@@ -66,13 +66,9 @@ def merge_demods_from_files(
     counter = 0
     for p in timestamps:
         p = f"{parent_folder}/{foldernames[counter]}/alldatas_{p}.json"
+        name = whole_name[counter]
         counter += 1
         data = load_json(p)
-        name = (
-            name_map[p]
-            if name_map and p in name_map
-            else os.path.splitext(os.path.basename(p))[0]
-        )
 
         dev_block = data.get(device_id, {})
         demods = dev_block.get("demods", {})

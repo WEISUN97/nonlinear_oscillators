@@ -19,7 +19,7 @@ class LockinController:
         # carrier frequency
         self.daq.setDouble("/dev1657/oscs/0/freq", carrier)
         # sideband frequencies
-        self.daq.setDouble("/dev1657/oscs/1/freq", sideband_freqs)
+        # self.daq.setDouble("/dev1657/oscs/1/freq", sideband_freqs)
 
         # low pass filter order
         self.daq.setInt("/dev1657/mods/0/carrier/order", filter_order)

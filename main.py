@@ -1,5 +1,4 @@
 from zhinst.core import ziDAQServer
-from module.scope import ScopeController
 from module.sweeper import SweeperController
 from module.lockin_config import LockinController
 from module.setting_read import generate_setting, create_allsettings_json
@@ -11,22 +10,24 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250902_02"
+foldername = "250904_01"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.005,
+        0.001,
+        0.0015,
     ],  # Amplitude for driven output
     "frerange": [
         # [56320, 56380],
-        [56320, 57000],
+        [56293, 56303],
+        [56290, 56303],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 0.5,  # Maximum bandwidth for sweeper
-    "samplecount": 100,  # Number of samples for sweeper
+    "samplecount": 200,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "2", "3"],  # Demodulator channels to use
@@ -95,7 +96,6 @@ def main(params={}, basepath="./results"):
     result = sweeper.run(demods=demods)
     sweeper.stop()
     suffix = f"_amp1_{output_amplitude1}_amp2_{output_amplitude2}"
-    generate_setting
     path, timestamp = create_new_folder(base_path=basepath, suffix=suffix)
     create_data_json(result=result, path=path, timestamp="alldatas_" + timestamp)
     list1.append(f"{timestamp}{suffix}")
