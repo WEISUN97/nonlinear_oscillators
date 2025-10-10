@@ -10,24 +10,39 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "250904_01"
+foldername = "251009_01"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
     "amp2": [
-        0.001,
-        0.0015,
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8,
+        0.9,
+        1,
     ],  # Amplitude for driven output
     "frerange": [
-        # [56320, 56380],
-        [56293, 56303],
-        [56290, 56303],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
+        [60000, 90000],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 0.5,  # Maximum bandwidth for sweeper
-    "samplecount": 200,  # Number of samples for sweeper
+    "maxbandwidth": 1,  # Maximum bandwidth for sweeper
+    "samplecount": 2000,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "2", "3"],  # Demodulator channels to use
@@ -123,7 +138,7 @@ if __name__ == "__main__":
         for j in range(len(setting["amp2"])):
             setting_one["amp2"] = setting["amp2"][j]
             # for k in range(len(setting["frerange"])):
-            setting_one["frerange"] = setting["frerange"][i]
+            setting_one["frerange"] = setting["frerange"][j]
             print(f"Running with settings: {setting_one}")
             daq = main(params=setting_one, basepath=basepath)
     # Stop the lock-in outputs
@@ -137,6 +152,7 @@ if __name__ == "__main__":
         demod_ids=("1", "2", "3"),
         fields=("frequency", "x", "y", "r", "phase"),
         parent_folder=basepath,
+        whole_name=list1,
     )
     # generate file name
     data = {"file_name": list1}

@@ -45,7 +45,7 @@ class LockinController:
         print(f"Setting output1 range to {output_range1} V")
         print(f"Setting output2 range to {output_range2} V")
         self.daq.setDouble("/dev1657/sigouts/0/range", output_range1)
-        time.sleep(0.5)
+        time.sleep(1)
         self.daq.setDouble(
             "/dev1657/sigouts/0/amplitudes/6", output_amplitude1 / output_range1
         )
