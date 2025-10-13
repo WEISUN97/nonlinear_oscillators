@@ -52,7 +52,8 @@ class LockinController:
         # print(1 / output_range1 * output_amplitude1)
         # # modulation output
         self.daq.setDouble("/dev1657/sigouts/1/range", output_range2)
-        time.sleep(0.5)
+        time.sleep(1)
         self.daq.setDouble(
             "/dev1657/sigouts/1/amplitudes/7", output_amplitude2 / output_range2
         )
+        time.sleep(1)
