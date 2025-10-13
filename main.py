@@ -34,7 +34,7 @@ setting = {
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 100,  # Maximum bandwidth for sweeper
-    "samplecount": 500,  # Number of samples for sweeper
+    "samplecount": 2000,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "2", "3"],  # Demodulator channels to use
