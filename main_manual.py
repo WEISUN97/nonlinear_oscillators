@@ -13,17 +13,24 @@ import time
 
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [0.002],
+    "amp2": [0.005, 0.01, 0.015, 0.02, 0.025, 0.03],
     # Amplitude for driven output
-    "frerange": [[56200, 56250]],  # Frequency range for sweeper
+    "frerange": [
+        [62000, 64000],
+        [62000, 64000],
+        [62000, 64000],
+        [62000, 64000],
+        [62000, 64000],
+        [62000, 64000],
+    ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
-    "samplecount": 200,  # Number of result for sweeper
+    "samplecount": 2000,  # Number of result for sweeper
     "output_range1": 1,  # Output range for modulation output
     "output_range2": 1,  # Output range for driven output
     "demods": ["1", "2", "3"],  # Demodulator channels to use
-    "wait_time": 0.2,  # Wait time after setting frequency
+    "wait_time": 1,  # Wait time after setting frequency
 }
-foldername = "250909_01"
+foldername = "251014_01"
 list1 = []
 timestamps = []
 
@@ -128,6 +135,6 @@ if __name__ == "__main__":
     # generate file name
     data = {"file_name": list1}
     create_data_json(
-        result=data, path=basepath, timestamp=f"{foldername}_all_file_names"
+        result=data, path=basepath, timestamp=f"{foldername}_all_file_names_manual"
     )
     print(list1)

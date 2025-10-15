@@ -10,7 +10,7 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "251013_05"
+foldername = "251013_07"
 list1 = []
 timestamps = []
 setting = {
@@ -33,7 +33,7 @@ setting = {
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
-    "maxbandwidth": 100,  # Maximum bandwidth for sweeper
+    "maxbandwidth": 1,  # Maximum bandwidth for sweeper
     "samplecount": 2000,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
