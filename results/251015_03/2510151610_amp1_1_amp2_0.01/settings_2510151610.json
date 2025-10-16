@@ -1,0 +1,36 @@
+{
+  "amp1": 1,
+  "amp2": 0.01,
+  "frerange": [
+    [
+      62000,
+      64000
+    ]
+  ],
+  "bandwidth": 1,
+  "samplecount": 2000,
+  "output_range1": 1,
+  "output_range2": 1,
+  "demods": [
+    "1",
+    "2",
+    "3"
+  ],
+  "wait_time": [
+    0.5
+  ],
+  "Other": {
+    "settings": {
+      "amplifier": [
+        "GND",
+        "1e^4",
+        "LOW",
+        "FBW",
+        "AC"
+      ],
+      "amplifier2": [
+        "2*10"
+      ]
+    }
+  }
+}
