@@ -11,32 +11,30 @@ from module.tools import (
 from module.json_merge import merge_demods_from_files
 import time
 
-foldername = "251016_01"
+foldername = "251016_02"
 
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [0.005, 0.01, 0.015, 0.02, 0.025, 0.03],
+    "amp2": [0.001, 0.002, 0.003, 0.004, 0.005],
     # Amplitude for driven output
     "frerange": [
-        [[62000, 64000]],
-        [[62000, 64000]],
-        [[62000, 62250], [62250, 63000], [63000, 64000]],
-        [[62000, 62750], [62750, 63000], [63000, 64000]],
-        [[62000, 62750], [62750, 63500], [63500, 64000]],
-        [[62000, 64000]],
+        [[62250, 62750]],
+        [[62250, 62750]],
+        [[62250, 62750]],
+        [[62250, 62750]],
+        [[62250, 62750]],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
-    "samplecount": 3000,  # Number of result for sweeper
+    "samplecount": 4000,  # Number of result for sweeper
     "output_range1": 1,  # Output range for modulation output
     "output_range2": 1,  # Output range for driven output
     "demods": ["1", "2", "3"],  # Demodulator channels to use
     "wait_time": [
-        [0.5],
-        [0.5],
-        [0.5, 1, 0.5],
-        [0.5, 1, 0.5],
-        [0.5, 2, 0.5],
-        [0.5],
+        [1],
+        [1],
+        [1],
+        [1],
+        [1],
     ],  # Wait time after setting frequency
 }
 list1 = []
