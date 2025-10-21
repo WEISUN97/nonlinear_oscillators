@@ -2,6 +2,7 @@ from zhinst.core import ziDAQServer
 from module.lockin_config import LockinController
 import numpy as np
 from module.setting_read import generate_setting, create_allsettings_json
+from module.mainframe import mainframe
 from module.tools import (
     save_sweep_to_csv,
     create_new_folder,
@@ -11,18 +12,14 @@ from module.tools import (
 from module.json_merge import merge_demods_from_files
 import time
 
-foldername = "251016_02"
+foldername = "251020_01"
 
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [0.001, 0.002, 0.003, 0.004, 0.005],
+    "amp2": [0.001],
     # Amplitude for driven output
     "frerange": [
-        [[62250, 62750]],
-        [[62250, 62750]],
-        [[62250, 62750]],
-        [[62250, 62750]],
-        [[62250, 62750]],
+        [[62475, 62575]],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "samplecount": 4000,  # Number of result for sweeper
@@ -30,11 +27,7 @@ setting = {
     "output_range2": 1,  # Output range for driven output
     "demods": ["1", "2", "3"],  # Demodulator channels to use
     "wait_time": [
-        [1],
-        [1],
-        [1],
-        [1],
-        [1],
+        [5],
     ],  # Wait time after setting frequency
 }
 list1 = []
@@ -146,5 +139,11 @@ if __name__ == "__main__":
     data = {"file_name": list1}
     create_data_json(
         result=data, path=basepath, timestamp=f"{foldername}_all_file_names_manual"
+    )
+    mainframe_settings = mainframe()
+    create_data_json(
+        result=mainframe_settings,
+        path=basepath,
+        timestamp=f"{foldername}_mainframe_settings",
     )
     print(list1)
