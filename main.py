@@ -11,20 +11,20 @@ from module.tools import (
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "251021_03"
+foldername = "251022_02"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [0.5],  # Amplitude for driven output
+    "amp2": [1],  # Amplitude for driven output
     "frerange": [
-        [179500, 180500],
+        [188600, 189000],
         # [170000, 190000],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 1,  # Maximum bandwidth for sweeper
-    "samplecount": 10,  # Number of samples for sweeper
+    "samplecount": 300,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "2", "3"],  # Demodulator channels to use
