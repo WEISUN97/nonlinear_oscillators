@@ -8,23 +8,24 @@ from module.tools import (
     create_new_folder,
     plot_sweep,
     create_data_json,
+    voltage_name_generator,
 )
 from module.json_merge import merge_demods_from_files
 
-foldername = "251022_02"
+foldername = "251022_05"
 list1 = []
 timestamps = []
 setting = {
     "amp1": [1],  # Amplitude for modulation output
-    "amp2": [1],  # Amplitude for driven output
+    "amp2": [0.5, 1],  # Amplitude for driven output
     "frerange": [
-        [188600, 189000],
-        # [170000, 190000],
+        [188750, 188825],
+        [188750, 188825],
     ],  # Frequency range for sweeper
     "bandwidth": 1,  # Bandwidth for sweeper
     "inaccuracy": 0.00001,  # Inaccuracy for sweeper
     "maxbandwidth": 1,  # Maximum bandwidth for sweeper
-    "samplecount": 300,  # Number of samples for sweeper
+    "samplecount": 275,  # Number of samples for sweeper
     "settling_time": 0,  # Settling time for sweeper
     "bandwidthcontrol": 2,  # 0: manual, 1: fixed, 2: auto
     "demods": ["1", "2", "3"],  # Demodulator channels to use
@@ -57,7 +58,6 @@ def main(params={}, basepath="./results"):
     avagering_sample = params.get("avagering_sample")
     output_range1 = params.get("output_range1")
     output_range2 = params.get("output_range2")
-
     start = frerange[0]
     stop = frerange[1]
     samplecount = samplecount
@@ -92,7 +92,8 @@ def main(params={}, basepath="./results"):
 
     result = sweeper.run(demods=demods)
     sweeper.stop()
-    suffix = f"_amp1_{output_amplitude1}_amp2_{output_amplitude2}"
+    names = voltage_name_generator(output_amplitude1, output_amplitude2)
+    suffix = f"_amp1_{names[0]}_amp2_{names[1]}"
     path, timestamp = create_new_folder(base_path=basepath, suffix=suffix)
     create_data_json(result=result, path=path, timestamp="alldatas_" + timestamp)
     list1.append(f"{timestamp}{suffix}")

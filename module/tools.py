@@ -174,3 +174,15 @@ def save_data_to_csv(file_path, data, titles=["Time", "Value(°C)"]):
 
     except Exception as e:
         print(f"An error occurred while saving data: {e}")
+
+
+def voltage_name_generator(voltages: list[float]) -> list[str]:
+    names = []
+    for v in voltages:
+        if v >= 1:
+            names.append(f"{v:.1f}V")
+        elif v >= 1e-3:
+            names.append(f"{v*1e3:.1f}mV")
+        else:
+            names.append(f"{v*1e6:.1f}uV")
+    return names

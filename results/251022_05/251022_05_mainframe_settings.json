@@ -1,0 +1,67 @@
+[
+  {
+    "Slot": 1,
+    "ID": "Stanford_Research_Systems,SIM965,s/n032048,ver4.18",
+    "FREQ": "1.00E+05",
+    "TYPE": "1",
+    "PASS": "1",
+    "SLPE": "12",
+    "COUP": "1"
+  },
+  {
+    "Slot": 2,
+    "ID": "Stanford_Research_Systems,SIM965,s/n015517,ver4.18",
+    "FREQ": "1.00E+04",
+    "TYPE": "1",
+    "PASS": "0",
+    "SLPE": "12",
+    "COUP": "1"
+  },
+  {
+    "Slot": 3,
+    "ID": "Stanford_Research_Systems,SIM965,s/n015518,ver4.18",
+    "FREQ": "5.00E+04",
+    "TYPE": "1",
+    "PASS": "1",
+    "SLPE": "48",
+    "COUP": "1"
+  },
+  {
+    "Slot": 4,
+    "ID": "Stanford_Research_Systems,SIM928,s/n035585,ver2.7",
+    "VOUT": "10.000",
+    "EXON": "1"
+  },
+  {
+    "Slot": 5,
+    "ID": "Stanford_Research_Systems,SIM964,s/n008140,ver1.1",
+    "ULIM": "+9.99",
+    "LLIM": "-9.99",
+    "AWAK": "0",
+    "ULCR": "0",
+    "LLCR": "0",
+    "OVLD": "0"
+  },
+  {
+    "Slot": 6,
+    "ID": "Stanford_Research_Systems,SIM980,s/n013668,ver1.25",
+    "CHAN": "1,0,0,0",
+    "READ": "-137"
+  },
+  {
+    "Slot": 7,
+    "ID": "Stanford_Research_Systems,SIM911,S/N012846,VER2.10",
+    "GAIN": "20",
+    "INPT": "1",
+    "COUP": "1",
+    "SHLD": "2"
+  },
+  {
+    "Slot": 8,
+    "ID": "Stanford_Research_Systems,SIM911,S/N012806,VER2.10",
+    "GAIN": "20",
+    "INPT": "1",
+    "COUP": "1",
+    "SHLD": "2"
+  }
+]
