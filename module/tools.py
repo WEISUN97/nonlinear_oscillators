@@ -180,9 +180,9 @@ def voltage_name_generator(voltages: list[float]) -> list[str]:
     names = []
     for v in voltages:
         if v >= 1:
-            names.append(f"{v:.1f}V")
+            names.append(f"{v:.0f}V")
         elif v >= 1e-3:
-            names.append(f"{v*1e3:.1f}mV")
+            names.append(f"{v*1e3:.0f}mV")
         else:
-            names.append(f"{v*1e6:.1f}uV")
+            names.append(f"{v*1e6:.0f}uV")
     return names
